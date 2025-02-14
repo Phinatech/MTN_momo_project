@@ -1,9 +1,11 @@
 # Authors
+
 This project is brought to you by the following contributors:
 
 ## Lead Developers
-- **Judith** - Main Developer, Project Coordinator (judith@example.com)
-    - Judith led the development efforts and coordinated the project activities to ensure timely delivery.
+
+- **Judith** - Main Developer, Project Coordinator (<judith@example.com>)
+  - Judith led the development efforts and coordinated the project activities to ensure timely delivery.
 - **Kelvin** - Backend Developer (kelvin@example.com)
     - Kelvin was responsible for designing and implementing the server-side logic and database management.
 - **Olivier** - Frontend Developer (olivier@example.com)
