@@ -39,7 +39,7 @@
             dataLabels: { enabled: false },
             xaxis: { categories: labels },
             fill: { opacity: 1 },
-            tooltip: { y: { formatter: value => value.toLocaleString() }} // Format numbers
+            tooltip: { y: { formatter: value => value.toLocaleString() }} 
         };
 
         var barChart = new ApexCharts(document.querySelector("#transaction_count_chart"), options);

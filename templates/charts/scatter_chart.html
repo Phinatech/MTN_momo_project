@@ -31,7 +31,7 @@
                 data: scatterData.series[0].data.map(item => ({
                     x: item.x,
                     y: item.y,
-                    type: item.type // Store transaction type for tooltip
+                    type: item.type 
                 }))
             }],
             chart: {
@@ -45,7 +45,7 @@
                 title: { text: "Transaction Amount (RWF)" },
                 labels: {
                     formatter: function(value) {
-                        return value.toLocaleString(); // Format numbers
+                        return value.toLocaleString(); 
                     }
                 }
             },
@@ -58,7 +58,7 @@
                 }
             },
             markers: {
-                size: 5, // Dot size
+                size: 5, 
                 colors: ['#FF4560'],
                 strokeWidth: 1
             },

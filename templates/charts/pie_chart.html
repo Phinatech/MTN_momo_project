@@ -27,7 +27,7 @@
             chart: { type: 'pie', height: 350 },
             labels: pieChartData.labels,
             legend: { position: "bottom" },
-            tooltip: { y: { formatter: value => value + "%" } } // Show percentage in tooltip
+            tooltip: { y: { formatter: value => value + "%" } } 
         };
 
         var pieChart = new ApexCharts(document.querySelector("#transaction_pie_chart"), options);
