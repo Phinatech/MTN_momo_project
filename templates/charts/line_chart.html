@@ -1,0 +1,50 @@
+<!-- Chart -->
+<div class="col-md-12">	
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Transaction Trends Over Time</h5>
+        </div>
+        <div class="card-body">
+            <div id="transaction_trends_chart"></div>
+        </div>
+    </div>
+</div>
+<!-- /Chart -->
+
+
+<!-- Store Line Chart Data -->
+<script id="line-chart-data" type="application/json">{{ line_chart_data_json|safe }}</script>
+<script id="line-chart-labels" type="application/json">{{ line_chart_labels_json|safe }}</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const rawData = JSON.parse(document.getElementById('line-chart-data').textContent);
+        const labels = JSON.parse(document.getElementById('line-chart-labels').textContent);
+
+        if (rawData.length === 0) {
+            console.error("No data available for the line chart.");
+            return;
+        }
+
+        // Extract unique dates for the X-axis
+        const dates = rawData.map(entry => entry.date);
+
+        // Prepare series data for each transaction type
+        const seriesData = labels.map(type => ({
+            name: type,
+            data: rawData.map(entry => entry[type] || 0) // Ensure missing values are 0
+        }));
+
+        var options = {
+			series: seriesData,
+			chart: { type: 'line', height: 350 },
+			xaxis: { categories: dates },
+			yaxis: { labels: { formatter: value => value.toLocaleString() } },
+			stroke: { curve: 'smooth', width: 2 }, // 👈 Make lines thinner (was thick by default)
+			tooltip: { y: { formatter: value => value.toLocaleString() } }
+		};
+
+        var lineChart = new ApexCharts(document.querySelector("#transaction_trends_chart"), options);
+        lineChart.render();
+    });
+</script>

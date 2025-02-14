@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+			
+			<!-- Page Wrapper -->
+			<div class="page-wrapper">
+				<div class="content container-fluid">
+			
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row align-items-center">
+							<div class="col">
+								<h3 class="page-title">{{type|title}}</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{% url "api:index" %}">Dashboard</a></li>
+									<li class="breadcrumb-item active">{{type|title}}</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+
+
+					{% if type == "All Transactions" %}
+					<div class="row">
+						{% for transaction in transaction_summary %}
+							<div class="col-xl-3 col-sm-4 col-12">
+								<div class="card inovices-card">
+									<div class="card-body">
+										<div class="inovices-widget-header">
+											<span class="inovices-widget-icon">
+												<img src="assets/img/icons/invoices-icon1.svg" alt="">
+											</span>
+											<div class="inovices-dash-count">
+												<div class="inovices-amount">RWF {{transaction.total_amount|intcomma}}</div>
+											</div>
+										</div>
+										<p class="inovices-all">{{ transaction.type }} <span>{{ transaction.count|intcomma }}</span></p>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+					{% endif %}
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card card-table">
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-center table-hover datatable">
+											<thead class="thead-light">
+												<tr>
+													{% if type == "All Transactions" %}
+													<th>Type</th>
+													{% endif %}
+													<th>Transaction ID</th>
+													<th>Recipient</th>
+													<th>Recipient ID</th>
+													<th>Sender</th>
+													<th>Sender ID</th>
+													<th>Amount</th>
+													<th>Date</th>
+													
+													<th class="text-end">Action</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for payment in payments %}
+												<tr>
+													{% if type == "All Transactions" %}
+													<td><a href="{% url "api:details" payment.type payment.id %}">{{payment.type}}</a></td>
+													{% endif %}
+													<td><a href="{% url "api:details" payment.type payment.id %}">#{{ payment.transaction_id }}</a></td>
+													<td>
+														<h2 class="table-avatar">
+															<a href="">
+																<img class="avatar avatar-sm me-2 avatar-img rounded-circle" src="{% static 'img/profiles/avatar-02.jpg' %}" alt="User Image">
+																{{ payment.recipient }}
+															</a>
+														</h2>
+													</td>
+													<td><a href="javascript:void(0);">#{{ payment.recipient_id|default:"****" }}</a></td>
+													<td>
+														<h2 class="table-avatar">
+															<a href="">
+																<img class="avatar avatar-sm me-2 avatar-img rounded-circle" src="{% static 'img/profiles/avatar-02.jpg' %}" alt="User Image">
+																{{ payment.sender }}
+															</a>
+														</h2>
+													</td>
+													<td><a href="javascript:void(0);">#{{ payment.sender_id|default:"****" }}</a></td>
+													<td>RWF {{ payment.amount|floatformat:2|intcomma }}</td>
+													<td>{{ payment.date|date:"d M Y" }}</td>
+													<td class="text-end">
+														<a class="btn btn-sm btn-white" href="{% url "api:details" payment.type payment.id %}">
+															<i class="far fa-eye me-1"></i> View
+														</a>
+													</td>
+												</tr>
+												{% empty %}
+												<tr>
+													<td colspan="6" class="text-center">No payment transactions found.</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Page Wrapper -->
+{% endblock content %}

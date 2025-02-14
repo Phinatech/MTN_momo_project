@@ -1,0 +1,41 @@
+{% extends "partials/settings.html" %}
+{% load static %}
+
+{% block settings %}
+
+<div class="col-xl-9 col-md-8">
+	<div class="card">
+		<div class="card-header">
+			<h5 class="card-title">Delete your account</h5>
+		</div>
+		<div class="card-body">
+		
+			<!-- Form -->
+			<form method="POST">
+				{% csrf_token %}
+				<p class="card-text">
+					When you delete your account, you lose access to all services, and we permanently delete your data.
+				</p>
+				<p class="card-text">Are you sure you want to close your account?</p>
+			
+				<div class="form-group">
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="delete_account" name="confirm_delete">
+						<label class="custom-control-label text-danger" for="delete_account">
+							Confirm that I want to delete my account.
+						</label>
+					</div>
+				</div>
+			
+				<div class="text-end">
+					<button type="submit" class="btn btn-danger">Delete Account</button>
+				</div>
+			</form>
+			
+			<!-- /Form -->
+			
+		</div>
+	</div>
+</div>
+
+{% endblock settings %}

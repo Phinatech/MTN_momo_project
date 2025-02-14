@@ -1,0 +1,66 @@
+
+<!-- Chart -->
+<div class="col-md-6">	
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Transaction Amount Distribution</h5>
+        </div>
+        <div class="card-body">
+            <div id="transaction_histogram_chart"></div>
+        </div>
+    </div>
+</div>
+<!-- /Chart -->
+
+
+<!-- Store Django Data -->
+<script id="apex-histogram-data" type="application/json">{{ apex_histogram_data_json|safe }}</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const histogramData = JSON.parse(document.getElementById('apex-histogram-data').textContent);
+
+        if (!histogramData || histogramData.categories.length === 0) {
+            console.error("No data available for the histogram.");
+            return;
+        }
+
+        var options = {
+            series: histogramData.series,
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '60%',
+                    borderRadius: 5
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: histogramData.categories,
+                title: { text: "Transaction Amount (Grouped)" }
+            },
+            yaxis: {
+                title: { text: "Frequency of Transactions" }
+            },
+            tooltip: {
+                y: {
+                    formatter: function(value) {
+                        return value.toLocaleString(); // Format numbers with commas
+                    }
+                }
+            },
+            fill: {
+                colors: ['#008FFB']
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#transaction_histogram_chart"), options);
+        chart.render();
+    });
+</script>

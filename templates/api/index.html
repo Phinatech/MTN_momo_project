@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+{% if transactions %}
+	<!-- Page Wrapper -->
+	<div class="page-wrapper">
+		<div class="content container-fluid">
+
+			<div class="row">
+				{% for transaction in transaction_summary %}
+					<div class="col-xl-2 col-sm-6 col-12">
+						<div class="card card-two" style="min-height:15em">
+							<a href="{% url "api:transaction" transaction.type %}" style="color:#455560">
+								<div class="card-body">
+									<div class="dash-widget-header text-center d-flex flex-column align-items-center">
+										<span class="dash-widget-icon {{ transaction.color }} mb-2">
+											<i class="{{ transaction.icon }}"></i>
+										</span>
+										<div class="dash-count text-center">
+											<div class="dash-title">{{ transaction.type }}</div>
+											<div class="dash-counts">
+												<p class="counter">{{ transaction.count|intcomma }}</p>
+											</div>
+										</div>
+									</div>												
+									<div class="progress progress-sm mt-3">
+										<div class="progress-bar {{ transaction.color }}" role="progressbar" 
+											style="width: {{ transaction.percentage }}%" 
+											aria-valuenow="{{ transaction.percentage }}" 
+											aria-valuemin="0" aria-valuemax="100">
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+
+
+
+
+			</div>
+			
+			
+			<div class="row">
+				{% include "charts/bar_chart.html" %}
+				{% include "charts/donut_chart.html" %}
+				{% include "charts/pie_chart.html" %}
+				{% include "charts/histogram_chart.html" %}				
+				{% include "charts/line_chart.html" %}
+				{% include "charts/scatter_chart.html" %}
+			</div>
+
+
+		</div>
+	</div>
+	<!-- /Page Wrapper -->
+	{% else %}
+	<div class="page-wrapper">
+		<div class="content container-fluid">
+			<h2>Welcome, {{ user.username|title }}</h2>
+			<p>No transactions found. Upload a file</p>
+			
+			
+			<form  method="POST" enctype="multipart/form-data" id="upload-form">
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="file">Upload XML File:</label>
+					{{ form.file }}
+				</div>
+				<!-- 
+				<div class="form-group">
+					<label for="text">Paste Transactions:</label>
+					{{ form.text }}
+				</div>
+				-->
+				
+				<!-- Submit Button -->
+				<button type="submit" class="btn btn-primary" id="submit-btn">
+					Submit
+				</button>
+				
+				<!-- Validation Error Message (Initially Hidden) -->
+				<div id="validation-error" class="text-danger" style="display: none; margin-top: 10px;">
+					<p>Please upload a file or paste transactions in the text area.</p>
+				</div>
+			
+				<!-- Loading Spinner -->
+				<div id="loading-spinner" style="display: none; margin-top: 10px;">
+					<div class="spinner-border text-primary" role="status">
+						<span class="sr-only">Loading...</span>
+					</div>
+					<p>Processing your request...</p>
+				</div>
+			</form>
+			
+			<script src="{% static 'js/file_upload.js' %}"></script>
+			
+			
+		</div>
+	</div>
+{% endif %}
+
+
+
+	
+
+{% endblock content %}

@@ -1,0 +1,48 @@
+<div class="col-md-6">	
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Transaction Analytics</h5>
+        </div>
+        <div class="card-body">
+            <div id="transaction_count_chart"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Store Bar Chart Data -->
+<script id="bar-chart-data" type="application/json">{{ bar_chart_data_json|safe }}</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const barChartData = JSON.parse(document.getElementById('bar-chart-data').textContent);
+
+        if (barChartData.length === 0) {
+            console.error("No data available for the bar chart.");
+            return;
+        }
+
+        const labels = barChartData.map(item => item.label);
+        const amounts = barChartData.map(item => item.amount);
+        const fees = barChartData.map(item => item.fee);
+        const balances = barChartData.map(item => item.balance);
+
+        var options = {
+            series: [
+                { name: "Transaction Amount", data: amounts },
+                { name: "Transaction Fees", data: fees },
+                { name: "Account Balance", data: balances }
+            ],
+            chart: { type: 'bar', height: 350 },
+            plotOptions: { bar: { horizontal: false, columnWidth: '55%', endingShape: 'rounded' }},
+            dataLabels: { enabled: false },
+            xaxis: { categories: labels },
+            fill: { opacity: 1 },
+            tooltip: { y: { formatter: value => value.toLocaleString() }} // Format numbers
+        };
+
+        var barChart = new ApexCharts(document.querySelector("#transaction_count_chart"), options);
+        barChart.render();
+    });
+</script>

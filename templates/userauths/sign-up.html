@@ -1,0 +1,186 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Momo API - Sign Up</title>
+
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="main-wrapper login-body">
+    <div class="login-wrapper">
+		<div class="container">
+			<img class="img-fluid logo-dark mb-2" src="{% static 'img/logo.png' %}" alt="Logo" style="max-width: 7em; max-height: 7em;">
+			
+			<div class="loginbox">
+				<div class="login-right">
+					<div class="login-right-wrap">
+						<h1>Register</h1>
+						<p class="account-subtitle">Access to our dashboard</p>
+
+						<!-- Display Django Messages -->
+						{% if messages %}
+							{% include "partials/alert.html" %}
+						{% endif %}
+						
+						<!-- Registration Form -->
+						<form method="POST" action="{% url 'userauths:sign-up' %}">
+							{% csrf_token %}
+							
+							<div class="form-group">
+								<label class="form-control-label" for="reg_user_name">Username</label>
+								<input class="form-control" type="text" id="reg_user_name" name="username" required>
+							</div>
+							
+							<div class="form-group">
+								<label class="form-control-label" for="email">Email Address</label>
+								<input class="form-control" type="email" id="email" name="email" required>
+							</div>
+							
+							<div class="form-group">
+								<label class="form-control-label" for="first_name">First Name</label>
+								<input class="form-control" type="text" id="first_name" name="first_name" required>
+							</div>
+							
+							<div class="form-group">
+								<label class="form-control-label" for="last_name">Last Name</label>
+								<input class="form-control" type="text" id="last_name" name="last_name" required>
+							</div>
+							
+							<div class="form-group">
+								<label class="form-control-label" for="reg_pass_word">Password</label>
+								<input class="form-control" type="password" id="reg_pass_word" name="password1" onkeyup="validate()" required>
+							</div>
+							
+							<div class="form-group">
+								<label class="form-control-label" for="re_pass_word">Confirm Password</label>
+								<input class="form-control" type="password" id="re_pass_word" name="password2" onkeyup="validate()" required>
+							</div>
+							
+							<div class="form-group mb-0">
+								<button class="btn btn-lg btn-block btn-primary w-100" type="submit">Register</button>
+							</div>
+						</form>
+						<!-- /Registration Form -->
+
+
+						
+						<!-- /Social Login -->
+						<div class="text-center dont-have">Already have an account? <a href="{% url "userauths:sign-in" %}">Login</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const form = document.querySelector("form");
+		const username = document.getElementById("reg_user_name");
+		const email = document.getElementById("email");
+		const firstName = document.getElementById("first_name");
+		const lastName = document.getElementById("last_name");
+		const password = document.getElementById("reg_pass_word");
+		const confirmPassword = document.getElementById("re_pass_word");
+	
+		function showError(input, message) {
+			const parent = input.parentElement;
+			let error = parent.querySelector(".error-msg");
+			if (!error) {
+				error = document.createElement("small");
+				error.className = "error-msg text-danger";
+				parent.appendChild(error);
+			}
+			error.textContent = message;
+			input.classList.add("is-invalid");
+		}
+	
+		function showSuccess(input) {
+			const parent = input.parentElement;
+			const error = parent.querySelector(".error-msg");
+			if (error) error.remove();
+			input.classList.remove("is-invalid");
+		}
+	
+		function isValidEmail(email) {
+			const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+			return re.test(email);
+		}
+	
+		function validateField(input, message) {
+			if (input.value.trim() === "") {
+				showError(input, message);
+			} else {
+				showSuccess(input);
+			}
+		}
+	
+		function validateEmail() {
+			if (!isValidEmail(email.value.trim())) {
+				showError(email, "Please enter a valid email address.");
+			} else {
+				showSuccess(email);
+			}
+		}
+	
+		function validatePassword() {
+			const pass = password.value.trim();
+			if (pass.length < 6) {
+				showError(password, "Password must be at least 6 characters.");
+			} else {
+				showSuccess(password);
+			}
+		}
+	
+		function validateConfirmPassword() {
+			if (password.value !== confirmPassword.value) {
+				showError(confirmPassword, "Passwords do not match.");
+			} else {
+				showSuccess(confirmPassword);
+			}
+		}
+	
+		form.addEventListener("submit", function (e) {
+			let isValid = true;
+	
+			validateField(username, "Username is required.");
+			validateField(email, "Email is required.");
+			validateField(firstName, "First name is required.");
+			validateField(lastName, "Last name is required.");
+			validatePassword();
+			validateConfirmPassword();
+	
+			// Stop form submission if there are errors
+			if (document.querySelector(".is-invalid")) {
+				e.preventDefault();
+			}
+		});
+	
+		// Real-time validation when typing
+		email.addEventListener("keyup", validateEmail);
+		password.addEventListener("input", validatePassword);
+		confirmPassword.addEventListener("input", validateConfirmPassword);
+	
+		// Validate when the user leaves (blur event)
+		username.addEventListener("blur", () => validateField(username, "Username is required."));
+		email.addEventListener("blur", validateEmail);
+		firstName.addEventListener("blur", () => validateField(firstName, "First name is required."));
+		lastName.addEventListener("blur", () => validateField(lastName, "Last name is required."));
+		password.addEventListener("blur", validatePassword);
+		confirmPassword.addEventListener("blur", validateConfirmPassword);
+	});			
+</script>			
+
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<div class="col-12 col-md-6">	
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Transaction Distribution</h5>
+        </div>
+        <div class="card-body">
+            <div id="morrisDonut1"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Store Donut Chart Data -->
+<script id="donut-chart-data" type="application/json">{{ donut_chart_data_json|safe }}</script>
+
+<style>
+    #morrisDonut1 svg {
+        width: 100% !important;
+        height: auto !important;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function drawChart() {
+            const donutChartData = JSON.parse(document.getElementById('donut-chart-data').textContent);
+
+            if (donutChartData.length === 0) {
+                console.error("No data available for the donut chart.");
+                return;
+            }
+
+            // Clear any existing chart
+            document.getElementById('morrisDonut1').innerHTML = "";
+
+            // Prepare data for Morris Donut Chart
+            const chartData = donutChartData.map(item => ({
+                label: `${item.label}`,
+                value: item.count
+            }));
+
+            // Morris Donut Chart
+            Morris.Donut({
+                element: 'morrisDonut1',
+                data: chartData,
+                colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#26a69a', '#D7263D', '#F46036', '#2E86AB'],
+                formatter: function (y) {
+                    return y.toLocaleString();
+                }
+            });
+        }
+
+        drawChart();
+        window.addEventListener('resize', drawChart);
+    });
+</script>

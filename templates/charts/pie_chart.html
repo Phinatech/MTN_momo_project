@@ -1,0 +1,36 @@
+<div class="col-md-6">	
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Transaction Distribution</h5>
+        </div>
+        <div class="card-body">
+            <div id="transaction_pie_chart"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Store Pie Chart Data -->
+<script id="pie-chart-data" type="application/json">{{ pie_chart_data_json|safe }}</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const pieChartData = JSON.parse(document.getElementById('pie-chart-data').textContent);
+
+        if (pieChartData.values.length === 0) {
+            console.error("No data available for the pie chart.");
+            return;
+        }
+
+        var options = {
+            series: pieChartData.values,
+            chart: { type: 'pie', height: 350 },
+            labels: pieChartData.labels,
+            legend: { position: "bottom" },
+            tooltip: { y: { formatter: value => value + "%" } } // Show percentage in tooltip
+        };
+
+        var pieChart = new ApexCharts(document.querySelector("#transaction_pie_chart"), options);
+        pieChart.render();
+    });
+</script>

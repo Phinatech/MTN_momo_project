@@ -1,0 +1,81 @@
+
+<!-- Chart -->
+<div class="col-md-12">	
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Transaction Fee vs. Transaction Amount</h5>
+        </div>
+        <div class="card-body">
+            <div id="transaction_scatter_chart"></div>
+        </div>
+    </div>
+</div>
+<!-- /Chart -->
+
+
+<!-- Store Django Data -->
+<script id="apex-scatter-data" type="application/json">{{ apex_scatter_data_json|safe }}</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const scatterData = JSON.parse(document.getElementById('apex-scatter-data').textContent);
+
+        if (!scatterData || scatterData.series[0].data.length === 0) {
+            console.error("No data available for the scatter plot.");
+            return;
+        }
+
+        var options = {
+            series: [{
+                name: "Transaction Fees",
+                data: scatterData.series[0].data.map(item => ({
+                    x: item.x,
+                    y: item.y,
+                    type: item.type // Store transaction type for tooltip
+                }))
+            }],
+            chart: {
+                type: 'scatter',
+                height: 350,
+                zoom: {
+                    type: 'xy'
+                }
+            },
+            xaxis: {
+                title: { text: "Transaction Amount (RWF)" },
+                labels: {
+                    formatter: function(value) {
+                        return value.toLocaleString(); // Format numbers
+                    }
+                }
+            },
+            yaxis: {
+                title: { text: "Transaction Fee (RWF)" },
+                labels: {
+                    formatter: function(value) {
+                        return value.toLocaleString();
+                    }
+                }
+            },
+            markers: {
+                size: 5, // Dot size
+                colors: ['#FF4560'],
+                strokeWidth: 1
+            },
+            tooltip: {
+                custom: function({ seriesIndex, dataPointIndex, w }) {
+                    let data = w.config.series[seriesIndex].data[dataPointIndex];
+                    return `
+                        <div style="padding:10px; background:white; border-radius:5px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
+                            <strong>Transaction Type:</strong> ${data.type} <br>
+                            <strong>Amount:</strong> ${data.x.toLocaleString()} RWF <br>
+                            <strong>Fee:</strong> ${data.y.toLocaleString()} RWF
+                        </div>`;
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#transaction_scatter_chart"), options);
+        chart.render();
+    });
+</script>

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+	
+	<!-- Page Wrapper -->
+	<div class="page-wrapper">
+		<div class="content container-fluid">
+	
+			<div class="row justify-content-center">
+				<div class="col-xl-10">
+					<div class="card invoice-info-card">
+						<div class="card-body">
+							<div class="invoice-item invoice-item-one">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="invoice-logo">
+											<img src="{% static 'img/logo.png' %}" alt="logo">
+										</div>
+										<div class="invoice-head">
+											<h2>{{ details.type|title }}</h2>
+											<p>Transaction ID : {{details.transaction_id}}</p>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="invoice-info">
+											<h6 class="invoice-name">Service Center</h6>
+											<p class="invoice-details">
+												{{ details.service_center}} <br>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
+							<!-- Invoice Item -->
+							<div class="invoice-issues-box">
+								<div class="row">
+									<div class="col-lg-4 col-md-4">
+										<div class="invoice-issues-date">
+											<p>Date : {{details.date}}</p>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-4">
+										<div class="invoice-issues-date">
+											<p>Date Sent : {{details.date_sent}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /Invoice Item -->
+
+							<!-- Invoice Item -->
+							<div class="invoice-item invoice-table-wrap">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="table-responsive">
+											<table class="invoice-table table table-center mb-0">
+												<thead>
+													<tr>
+														<th>Recipient</th>
+														<th>Recipient ID</th>
+														<th>Sender</th>
+														<th>Sender ID</th>
+														<th>Amount</th>
+														<th class="text-end">Account Balance</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>{{details.recipient}}</td>
+														<td>{{details.recipient_id}}</td>
+														<td>{{details.sender}}</td>
+														<td>{{details.sender_id}}</td>
+														<th>{{details.currency}}{{details.amount|intcomma}}</th>
+														<th class="text-end">{{details.currency}}{{details.account_balance|intcomma}}</th>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /Invoice Item -->
+
+							<div class="row justify-content-center">
+								<div class="col-lg-12 col-md-12">
+									<div class="invoice-terms">
+										<h6>Raw Message:</h6>
+										<p class="mb-0">{{details.raw_message}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Wrapper -->
+			
+{% endblock content %}

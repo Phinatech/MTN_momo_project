@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+		<title>Momo Api Project</title>
+		
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="img/favicon.png">
+
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		
+		<!-- Fontawesome CSS -->
+		<link rel="stylesheet" href="{% static 'plugins/fontawesome/css/fontawesome.min.css' %}">
+		<link rel="stylesheet" href="{% static 'plugins/fontawesome/css/all.min.css' %}">
+		
+		
+		<!-- Select2 CSS -->
+		<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+		
+		<!-- Datepicker CSS -->
+		<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.min.css' %}">
+		
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" href="{% static 'plugins/datatables/datatables.min.css' %}">
+
+        <link rel="stylesheet" href="{% static 'plugins/c3-chart/c3.min.css' %}">
+
+		
+		<!-- Main CSS -->
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	</head>
+	<body>
+	
+		<!-- Main Wrapper -->
+		<div class="main-wrapper">
+		
+			
+			{% include "partials/header.html" %}
+
+			{% include "partials/sidebar.html" %}
+
+			{% include "partials/alert.html" %}
+			
+			{% block content %}
+			
+			{% endblock content %}
+			
+		</div>
+		<!-- /Main Wrapper -->
+		
+		
+		
+		<!-- jQuery -->
+		<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+		
+		<!-- Bootstrap Core JS -->
+		<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+		
+		<!-- Feather Icon JS -->
+		<script src="{% static 'js/feather.min.js' %}"></script>
+		
+		<!-- Slimscroll JS -->
+		<script src="{% static 'plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+		
+		<!-- Select2 JS -->
+		<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+
+		<!-- Datepicker Core JS -->
+		<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+		
+		<!-- Datatables JS -->
+		<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+		<script src="{% static 'plugins/datatables/datatables.min.js' %}"></script>
+
+		<!-- Stickynote JS -->
+		<script src="{% static 'plugins/countup/jquery.counterup.min.js' %}"></script>
+		<script src="{% static 'plugins/countup/jquery.waypoints.min.js' %}"></script>
+		<script src="{% static 'plugins/countup/jquery.missofis-countdown.js' %}"></script>
+
+		<!-- Chart JS -->
+		<script src="{% static 'plugins/apexchart/apexcharts.min.js' %}"></script>
+		<script src="{% static 'plugins/apexchart/chart-data.js' %}"></script>
+		<script src="{% static 'plugins/countup/jquery.counterup.min.js' %}"></script>
+		<script src="{% static 'plugins/morris/raphael-min.js' %}"></script>
+		<script src="{% static 'plugins/morris/morris.min.js' %}"></script>
+		<script src="{% static 'plugins/morris/chart-data.js' %}"></script>
+
+		<script src="{% static 'plugins/c3-chart/d3.v5.min.js' %}"></script>
+		<script src="{% static 'plugins/c3-chart/c3.min.js' %}"></script>
+		<script src="{% static 'plugins/c3-chart/chart-data.js' %}"></script>
+
+		<script src="{% static 'plugins/flot/jquery.flot.js' %}"></script>
+		<script src="{% static 'plugins/flot/jquery.flot.fillbetween.js' %}"></script>
+		<script src="{% static 'plugins/flot/jquery.flot.pie.js' %}"></script>
+		<script src="{% static 'plugins/flot/chart-data.js' %}"></script>
+		
+		
+			
+		
+		<!-- Custom JS -->
+		<script src="{% static 'js/script.js' %}"></script>
+
+	</body>
+</html>

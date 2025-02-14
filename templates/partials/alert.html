@@ -1,0 +1,119 @@
+<style>
+    /* General Alert Styles */
+    .alert {
+        font-family: 'Arial', sans-serif; /* Change font to Arial */
+        font-size: 1rem; /* Set the font size to 1rem */
+        padding: 15px; /* Increase padding for a larger alert */
+        border-radius: 8px; /* Rounded corners for alert box */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+        margin-bottom: 20px;
+    }
+    
+    /* Custom Alert Colors for Different Types */
+    .alert-info {
+        background-color: #e0f7fa; /* Light blue background for info */
+        color: #00796b; /* Dark teal text color */
+        border-left: 4px solid #00796b; /* Left border color */
+    }
+    
+    .alert-success {
+        background-color: #dff0d8; /* Light green background for success */
+        color: #3c763d; /* Dark green text color */
+        border-left: 4px solid #3c763d; /* Left border color */
+    }
+    
+    .alert-warning {
+        background-color: #fff3cd; /* Light yellow background for warnings */
+        color: #856404; /* Dark yellow/brown text color */
+        border-left: 4px solid #856404; /* Left border color */
+    }
+    
+    .alert-danger {
+        background-color: #f8d7da; /* Light red background for danger */
+        color: #721c24; /* Dark red text color */
+        border-left: 4px solid #721c24; /* Left border color */
+    }
+    
+    /* Fade In Effect */
+    .alert-dismissible {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out; /* Smooth fade-in transition */
+    }
+    
+    .alert-dismissible.show {
+        opacity: 1;
+    }
+    
+    /* Close Button Custom Style */
+    .btn-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        border: none;
+        background: transparent;
+        font-size: 1.2rem; /* Slightly larger close button */
+        color: inherit; /* Make the close button inherit text color */
+        cursor: pointer;
+    }
+    
+    .btn-close:hover {
+        color: #333; /* Darker color on hover */
+        opacity: 0.8; /* Slight opacity change on hover */
+    }
+    
+    .text-center {
+        text-align: center; /* Ensure the alert text is centered */
+    }
+    
+    /* Optional: Smaller Alert Variant */
+    .alert-sm {
+        font-size: 0.875rem; /* Smaller text for alerts */
+        padding: 10px 15px; /* Adjust padding for smaller size */
+    }
+    
+</style>
+
+
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} alert-dismissible fade show text-center" role="alert">
+    <strong>{{ message }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+
+<script>
+    // Function to handle fade out after a few seconds (e.g., 5 seconds)
+    document.addEventListener("DOMContentLoaded", function() {
+        // Select all alert elements
+        var alerts = document.querySelectorAll('.alert');
+
+        // Set a timeout for each alert to fade out after 5 seconds (5000ms)
+        alerts.forEach(function(alert) {
+            setTimeout(function() {
+                // Fade out effect
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+                
+                // Optional: Remove the alert entirely from the DOM after fadeout completes
+                setTimeout(function() {
+                    alert.remove();
+                }, 500); // This should match the transition duration
+            }, 5000); // 5 seconds timeout before fading out
+        });
+
+        // Add a click event to close alert manually
+        var closeButtons = document.querySelectorAll('.btn-close');
+        closeButtons.forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                var alertElement = e.target.closest('.alert');
+                alertElement.classList.remove('show');
+                alertElement.classList.add('fade');
+                
+                // Optionally remove the alert from the DOM after a fade
+                setTimeout(function() {
+                    alertElement.remove();
+                }, 500); // Match with the fade out transition duration
+            });
+        });
+    });
+</script>

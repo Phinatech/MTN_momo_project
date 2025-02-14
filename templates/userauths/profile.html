@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="row justify-content-lg-center">
+            <div class="col-lg-12">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="page-title">Profile</h3>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'api:index' %}">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Profile</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Page Header -->
+
+                <div class="profile-cover">
+                    <div class="profile-cover-wrap">
+                        <img class="profile-cover-img" src="{% if profile.cover_image %}{{ profile.cover_image.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}" alt="Profile Cover">
+                    </div>
+                </div>
+
+                <div class="text-center mb-5">
+                    <label class="avatar avatar-xxl profile-cover-avatar" for="avatar_upload">
+                        <img class="avatar-img" src="{% if profile.image %}{{ profile.image.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}" alt="Profile Image">
+                    </label>
+                    <h2>{{ user.first_name|title }} {{ user.last_name|title }}</h2>
+                    <ul class="list-inline">
+                        {% if profile.location %}
+                        <li class="list-inline-item">
+                            <i class="fas fa-map-marker-alt"></i> {{ profile.location }}
+                        </li>
+                        {% endif %}
+                        <li class="list-inline-item">
+                            <i class="far fa-calendar-alt"></i> <span>Joined {{ user.date_joined|date:"F Y" }}</span>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title d-flex justify-content-between">
+                                    <span>Profile</span> 
+                                    <a class="btn btn-sm btn-white" href="{% url 'userauths:settings' %}">Edit</a>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="py-0"><small class="text-dark">About</small></li>
+                                    <li>{{ user.first_name }} {{ user.last_name }}</li>
+                                    
+                                    <li class="pt-2 pb-0"><small class="text-dark">Contacts</small></li>
+                                    <li>{{ user.email }}</li>
+                                    {% if profile.phone %}
+                                    <li>{{ profile.phone }}</li>
+                                    {% endif %}
+                                    
+                                    <li class="pt-2 pb-0"><small class="text-dark">Address</small></li>
+                                    <li>
+                                        {% if profile.address_line1 %}{{ profile.address_line1 }}<br>{% endif %}
+                                        {% if profile.address_line2 %}{{ profile.address_line2 }}<br>{% endif %}
+                                        {% if profile.zipcode %}{{ profile.zipcode }}{% endif %}
+                                    </li>
+                                </ul>
+                            </div>
+                        
+                        </div>
+                        <div>
+                            <!-- Download Button -->
+                            {% if transactions.file %}
+                                <a href="{{ transactions.file.url }}" class="btn btn-primary mt-3" download>
+                                    Download XML File
+                                </a>
+                            {% else %}
+                                <p class="text-muted mt-3">No XML file available.</p>
+                            {% endif %}
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <form action="{% url 'api:upload_file' %}" method="POST" enctype="multipart/form-data" id="upload-form">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="file">Upload XML File:</label>
+                                    {{ form.file }}
+                                </div>
+                                <!--
+                                <div class="form-group">
+                                    <label for="text">Paste Transactions:</label>
+                                    {{ form.text }}
+                                </div>
+                                -->
+                                
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn btn-primary" id="submit-btn">
+                                    Update File
+                                </button>
+                                
+                                <!-- Validation Error Message (Initially Hidden) -->
+                                <div id="validation-error" class="text-danger" style="display: none; margin-top: 10px;">
+                                    <p>Please upload a file or paste transactions in the text area.</p>
+                                </div>
+                        
+                                <!-- Loading Spinner -->
+                                <div id="loading-spinner" style="display: none; margin-top: 10px;">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    <p>Processing your request...</p>
+                                </div>
+                            </form>
+                            <script src="{% static 'js/file_upload.js' %}"></script>
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-lg-9">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">XML File Content</h5>
+                                <span class="badge bg-primary">XML</span>
+                            </div>
+                            <div class="card-body card-body-height position-relative">
+                                <!-- Code Block -->
+                                <div class="position-relative">
+                                    <pre id="xml-box" class="p-3 rounded"
+                                         style="white-space: pre-wrap; background: #e3e3e3; color: #000; border: 1px solid #ddd; max-height: 400px; overflow-y: auto;">
+                                        <code id="xml-content">{{ transactions.text_content|escape }}</code>
+                                    </pre>
+                                    <button id="copy-btn"
+                                            class="btn btn-sm btn-light position-absolute top-0 end-0 mt-2 me-2"
+                                            onclick="copyXML()">
+                                        Copy
+                                    </button>
+                                </div>
+                                <!-- /Code Block -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function copyXML() {
+                            const xmlContent = document.getElementById("xml-content").innerText.trim();
+                            const copyBtn = document.getElementById("copy-btn");
+                    
+                            navigator.clipboard.writeText(xmlContent).then(() => {
+                                copyBtn.innerText = "Copied!";
+                                copyBtn.classList.add("btn-success");
+                    
+                                setTimeout(() => {
+                                    copyBtn.innerText = "Copy";
+                                    copyBtn.classList.remove("btn-success");
+                                }, 2000);
+                            });
+                        }
+
+                    
+                        // Pretty-format XML content
+                        document.addEventListener("DOMContentLoaded", function () {
+                            let xmlContent = document.getElementById("xml-content").innerText;
+                            try {
+                                let parser = new DOMParser();
+                                let xml = parser.parseFromString(xmlContent, "application/xml");
+                                let serializer = new XMLSerializer();
+                                let prettyXML = serializer.serializeToString(xml);
+                                document.getElementById("xml-content").innerText = prettyXML;
+                            } catch (error) {
+                                console.error("Error formatting XML:", error);
+                            }
+                        });
+                    </script>                    
+                    
+                    
+					
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Wrapper -->
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% load static %}
+<!-- Header -->
+<div class="header header-one">
+			
+    <!-- Logo -->
+    <div class="header-left header-left-one">
+        <a href="{% url "api:index" %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="Logo">
+        </a>
+        <a href="{% url "api:index" %}" class="white-logo">
+            <img src="{% static 'img/logo-white.png' %}" alt="Logo">
+        </a>
+        <a href="{% url "api:index" %}" class="logo logo-small">
+            <img src="{% static 'img/logo-small.png' %}" alt="Logo" width="30" height="30">
+        </a>
+    </div>
+    <!-- /Logo -->
+    
+    <!-- Sidebar Toggle -->
+    <a href="javascript:void(0);" id="toggle_btn">
+        <i class="fas fa-bars"></i>
+    </a>
+    <!-- /Sidebar Toggle -->
+    
+    <!-- Search -->
+    <div class="top-nav-search">
+        <form>
+            <input type="text" class="form-control" placeholder="Search here">
+            <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+    <!-- /Search -->
+    
+    <!-- Mobile Menu Toggle -->
+    <a class="mobile_btn" id="mobile_btn">
+        <i class="fas fa-bars"></i>
+    </a>
+    <!-- /Mobile Menu Toggle -->
+    
+    <!-- Header Menu -->
+    <ul class="nav nav-tabs user-menu">
+        
+        <!-- User Menu -->
+        <li class="nav-item dropdown has-arrow main-drop">
+            <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                <span class="user-img">
+                    <img src="{% if request.user.profile.image %}{{ request.user.profile.image.url }}{% else %}{% static 'img/profiles/avatar-01.jpg' %}{% endif %}" alt="User Avatar" style="width:3em; height:3em">
+                    <span class="status online"></span>
+                </span>
+                <span>{{request.user.username|title}}</span>
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url "userauths:my_profile" %}"><i data-feather="user" class="me-1"></i> Profile</a>
+                <a class="dropdown-item" href="{% url "userauths:settings" %}"><i data-feather="settings" class="me-1"></i> Settings</a>
+                <a class="dropdown-item" href="{% url "userauths:sign-out" %}"><i data-feather="log-out" class="me-1"></i> Logout</a>
+            </div>
+        </li>
+        <!-- /User Menu -->
+        
+    </ul>
+    <!-- /Header Menu -->
+    
+</div>
+<!-- /Header -->
