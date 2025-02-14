@@ -27,8 +27,8 @@ The **Momo API App** is a Django-based application that allows users to **upload
 
 ### **1️⃣ Clone the Repository**  
 ```bash
-git clone https://github.com/phinatech/MomoAPI.git
-cd momo-api-app
+git clone https://github.com/Phinatech/MTN_momo_project.git
+cd MTN_momo_project
 ```
 
 ### **2️⃣ Create a Virtual Environment**  
@@ -55,6 +55,7 @@ python manage.py createsuperuser
 ```
 
 ### **7️⃣ Start the Development Server**  
+
 ```bash
 python manage.py runserver
 ```
