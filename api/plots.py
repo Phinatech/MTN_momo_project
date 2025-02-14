@@ -114,7 +114,7 @@ def donut_chart(request):
 def pie_chart(request):
     _, transaction_counts, total_transactions = get_user_transactions(request)
         
-    # Compute percentage of each transaction type
+    # Computing percentage for each transaction type
     pie_chart_data = {
         "labels": list(transaction_counts.keys()),
         "values": [round((count / total_transactions) * 100, 2) for count in transaction_counts.values()]
@@ -126,7 +126,7 @@ def line_chart(request):
     
     transactions, _, _ = get_user_transactions(request)
       
-    # Dictionary to hold transaction trends
+    # Created a Dictionary to hold transaction trends
     transaction_trends = defaultdict(lambda: defaultdict(float))
 
     # Aggregate data by date and transaction type
