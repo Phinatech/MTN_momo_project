@@ -49,7 +49,7 @@ def index_transactions(request):
         'color': 'bg-dark',
     })
 
-    # Add individual transaction types
+    # Adding individual transaction types 
     for transaction_type, _ in Transaction.TRANSACTION_TYPES:
         filtered_transactions = transactions.filter(type=transaction_type)
         count = filtered_transactions.count()
@@ -72,7 +72,7 @@ def bar_chart(request):
     
     transactions, _, _ = get_user_transactions(request)
 
-    # Group transactions by type (for Bar Chart)
+    # Grouping transactions by type (for Bar Chart)
     transaction_summary = defaultdict(lambda: {"amount": 0, "fee": 0, "balance": 0})
 
     for tx in transactions:
@@ -80,7 +80,7 @@ def bar_chart(request):
         transaction_summary[tx.type]["fee"] += tx.transaction_fee
         transaction_summary[tx.type]["balance"] += tx.account_balance
 
-    # Convert to list for JSON
+    # Converting  to list for JSON for better visualization
     bar_chart_data = [
         {
             "label": key,
@@ -98,7 +98,7 @@ def donut_chart(request):
     
     _, transaction_counts, total_transactions = get_user_transactions(request)
     
-    # Prepare Donut Chart Data
+    # Preparing Donut Chart Data
     donut_chart_data = [
         {
             "label": key,
