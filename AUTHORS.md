@@ -14,6 +14,7 @@ This project is brought to you by the following contributors:
     - Charles crafted the visual design and user interaction flows for the application.
 
 ## Contributors
+
 - **Alice Johnson** - Documentation, Testing (alice@example.com)
     - Alice handled the project documentation and conducted thorough testing to ensure quality.
 - **Bob Brown** - DevOps, Infrastructure (bob@example.com)
