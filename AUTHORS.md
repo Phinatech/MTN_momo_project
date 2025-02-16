@@ -4,7 +4,7 @@ This project is brought to you by the following contributors:
 
 ## Lead Developers
 
-- **Judith** - Main Developer, Project Coordinator (<judith@example.com>)
+- **Judith** - Main Developer, Project Coordinator (<c.ugbo@alustudent.com>)
   - Judith led the development efforts and coordinated the project activities to ensure timely delivery.
 - **Kelvin** - Backend Developer (kelvin@example.com)
     - Kelvin was responsible for designing and implementing the server-side logic and database management.
@@ -19,12 +19,6 @@ This project is brought to you by the following contributors:
     - Alice handled the project documentation and conducted thorough testing to ensure quality.
 - **Bob Brown** - DevOps, Infrastructure (bob@example.com)
     - Bob managed the deployment processes and maintained the infrastructure for the project.
-
-## Special Thanks
-- **Charlie Davis** - Security Consultant (charlie@example.com)
-    - Charlie provided expert advice on security measures and best practices.
-- **Dana White** - Project Advisor (dana@example.com)
-    - Dana offered strategic guidance and support throughout the project lifecycle.
 
 We thank all contributors for their hard work and dedication to this project.
 
