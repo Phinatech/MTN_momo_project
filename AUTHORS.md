@@ -6,7 +6,7 @@ This project is brought to you by the following contributors:
 
 - **Judith** - Main Developer, Project Coordinator (<c.ugbo@alustudent.com>)
   - Judith led the development efforts and coordinated the project activities to ensure timely delivery.
-- **Kelvin** - Backend Developer (kelvin@example.com)
+- **Kelvin** - Backend Developer (<k.tawe@alustudent.com>)
     - Kelvin was responsible for designing and implementing the server-side logic and database management.
 - **Olivier** - Frontend Developer (olivier@example.com)
     - Olivier developed the user interface and ensured a seamless user experience.
