@@ -35,7 +35,7 @@ def RegisterView(request):
                 username = form.cleaned_data.get("username")
                 password = form.cleaned_data.get("password1")
 
-                messages.success(request, f"Welcome, {username.title()}! Your account has been created successfully. You are now logged in.")
+                messages.success(request, f"Welcome, {username.title()}! Your account has been created successfully. You are now logged in as {username}.")
 
                 # Authenticate and login the user
                 authenticated_user = authenticate(username=email, password=password)
@@ -49,9 +49,9 @@ def RegisterView(request):
             except IntegrityError as e:
                 # Check if the error is related to unique constraint violation
                 if 'username' in str(e):
-                    messages.error(request, "The username you have chosen is already taken. Please choose a different username.")
+                    messages.error(request, "The USERNAME you have chosen is already taken. Please choose a different username!.")
                 elif 'email' in str(e):
-                    messages.error(request, "The email address is already associated with an existing account.")
+                    messages.error(request, "The EMAIL address is already associated with an existing account.")
                 else:
                     messages.error(request, "There was an error creating your account. Please try again.")
                 return redirect("userauths:sign-up")
