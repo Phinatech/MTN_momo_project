@@ -241,6 +241,7 @@ class Command(BaseCommand):
         # creating a default xml file path if it doesn not exist yet and the user has not provided one
         # but the default xml file should be modified_sms_v2.xml
         if not file_path:
+            print("No file path provided. Using default file path...")
             file_path = "modified_sms_v2.xml"
             print(f"Using default file path: {file_path}")
             print(f"File path: {file_path}")
