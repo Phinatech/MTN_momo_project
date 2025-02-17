@@ -32,7 +32,7 @@
         // Prepare series data for each transaction type
         const seriesData = labels.map(type => ({
             name: type,
-            data: rawData.map(entry => entry[type] || 0) 
+            data: rawData.map(entry => entry[type] || 0) // Ensure missing values are 0
         }));
 
         var options = {
@@ -40,7 +40,7 @@
 			chart: { type: 'line', height: 350 },
 			xaxis: { categories: dates },
 			yaxis: { labels: { formatter: value => value.toLocaleString() } },
-			stroke: { curve: 'smooth', width: 2 }, 
+			stroke: { curve: 'smooth', width: 2 }, // 👈 Make lines thinner (was thick by default)
 			tooltip: { y: { formatter: value => value.toLocaleString() } }
 		};
 

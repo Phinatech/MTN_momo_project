@@ -44,7 +44,7 @@
         <li class="nav-item dropdown has-arrow main-drop">
             <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                 <span class="user-img">
-                    <img src="{% if request.user.profile.image %}{{ request.user.profile.image.url }}{% else %}{% static 'img/profiles/avatar-01.jpg' %}{% endif %}" alt="User Avatar" style="width:3em; height:3em">
+                    <img class="avatar avatar-sm me-2 avatar-img rounded-circle" src="{{ request.user.profile.image.url }}" alt="User Image">
                     <span class="status online"></span>
                 </span>
                 <span>{{request.user.username|title}}</span>

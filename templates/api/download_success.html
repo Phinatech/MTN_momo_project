@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+  <div class="page-wrapper">
+    <div class="content container-fluid">
+      {% include "partials/alert.html" %}
+
+       <!-- This message can let the user know that the download will start automatically -->
+       <p>If the download doesn't start automatically, <a href="{% url 'api:details_download' type=type id=id file_format=file_format %}">click here to download</a>.</p>
+      
+      <script type="text/javascript">
+        window.onload = function() {
+          // Create a hidden link to trigger the download
+          var link = document.createElement("a");
+          link.href = "{% url 'api:details_download' type=type id=id file_format=file_format %}";
+          link.download = "{{ type }}_{{ id }}.{{ file_format }}"; // Filename for the download
+          
+          // Trigger the click to start the download
+          link.click();
+        };
+      </script>
+      
+    </div>
+  </div>
+{% endblock %}

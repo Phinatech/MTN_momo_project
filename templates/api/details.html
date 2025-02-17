@@ -25,17 +25,31 @@
 									</div>
 									<div class="col-md-6">
 										<div class="invoice-info">
-											<h6 class="invoice-name">Service Center</h6>
-											<p class="invoice-details">
-												{{ details.service_center}} <br>
-											</p>
+											<a class="dropdown-item" href="{% url 'api:details_api' details.type details.id %}">
+												<i class="far fa-edit me-2"></i> View as JSON
+											</a>
+											<a class="dropdown-item" href="{% url 'api:details_download' details.type details.id 'pdf' %}" target="_blank">
+												<i class="far fa-file-alt me-2"></i> Download as PDF
+											</a>
+											<a class="dropdown-item" href="{% url 'api:details_download' details.type details.id 'csv' %}" target="_blank">
+												<i class="fas fa-file-csv me-2"></i> Download as CSV
+											</a>
+											<a class="dropdown-item" href="{% url 'api:details_download' details.type details.id 'json' %}" target="_blank">
+												<i class="far fa-file-code me-2"></i> Download as JSON
+											</a>
+											<div class="dropdown dropdown-action">
+												<div class="dropdown-menu dropdown-menu-right">
+																													
+												</div>															
+											</div>
+											
+											
 										</div>
 									</div>
 								</div>
-							</div>
-							
-							
-							<!-- Invoice Item -->
+								</div>
+
+								<!-- Invoice Item -->
 							<div class="invoice-issues-box">
 								<div class="row">
 									<div class="col-lg-4 col-md-4">
@@ -92,7 +106,15 @@
 										<p class="mb-0">{{details.raw_message}}</p>
 									</div>
 								</div>
+								
+								<h6 class="invoice-name">Service Center</h6>
+								<p class="invoice-details">
+									{{ details.service_center}} <br>
+								</p>
+								
 							</div>
+							</div>
+							
 						</div>
 					</div>
 				</div>

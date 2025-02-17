@@ -10,6 +10,8 @@ from collections import defaultdict
 from .plots import index_transactions, bar_chart, donut_chart,pie_chart,line_chart,histogram_chart,scatter_chart
 from .forms import TransactionUploadForm
 from django.contrib import messages
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
 
 
 @login_required
@@ -40,8 +42,6 @@ def upload_file(request):
         'form': form,
     }
     return render(request, 'userauths/profile.html', context)
-
-    
 
 @login_required
 def index(request):
@@ -90,34 +90,77 @@ def index(request):
     return render(request, 'api/index.html', context)
 
 
+def get_transactions(user, type=None):
+    """Helper function to get user transactions based on type."""
+    if type == "All Transactions" or type is None:
+        return Transaction.objects.filter(user=user)
+    return Transaction.objects.filter(user=user, type=type)
+
 @login_required
 def transaction(request, type):
+    """Render transactions page."""
     transactions, transaction_summary = index_transactions(request)
-    if type == "All Transactions":
-        payments = Transaction.objects.filter(user=request.user).all()
-    else:
-        payments = Transaction.objects.filter(user=request.user, type=type)
+    payments = get_transactions(request.user, type)
 
     context = {
         "payments": payments,
         "type": type,
-        'transactions': transactions,
-        'transaction_summary': transaction_summary,
-        
+        "transactions": transactions,
+        "transaction_summary": transaction_summary,
     }
     
-    return render(request, 'api/transaction.html', context)
+    return render(request, "api/transaction.html", context)
 
 @login_required
 def details(request, type, id):
+    """Render transaction details page."""
+    details = get_object_or_404(Transaction, user=request.user, id=id, type=type)
 
-    details = Transaction.objects.get(user=request.user, id=id, type=type)
+    context = {"details": details}
+    return render(request, "api/details.html", context)
 
-    context = {
-        "details": details,
+@login_required
+def transaction_api(request, type):
+    """Return transactions as JSON."""
+    payments = get_transactions(request.user, type)
+    transactions_list = list(payments.values())  # Convert QuerySet to list of dicts
+
+    return JsonResponse({"transactions": transactions_list}, safe=False)
+
+@login_required
+def details_api(request, type, id):
+    """Return transaction details as JSON."""
+    details = get_object_or_404(Transaction, user=request.user, id=id, type=type)
+
+    transaction_data = {
+        "id": details.id,
+        "type": details.type,
+        "sender": details.sender,
+        "recipient": details.recipient,
+        "amount": details.amount,
+        "currency": details.currency,
+        "transaction_id": details.transaction_id,
+        "date": details.date.strftime("%Y-%m-%d %H:%M:%S"),
+        "service_center": details.service_center,
+        "account_balance": details.account_balance,
+        "transaction_fee": details.transaction_fee,
+        "raw_message": details.raw_message,
     }
-    
-    return render(request, 'api/details.html', context)
+
+    return JsonResponse({"transaction_details": transaction_data})
 
 
 
+# Errors
+def error_view(request, exception=None, status=500):
+    """A single view to handle 404, 500, 403, and 400 errors dynamically."""
+    context = {
+        "status_code": status,
+        "message": {
+            404: "Page Not Found",
+            500: "Internal Server Error",
+            403: "Forbidden Access",
+            400: "Bad Request"
+        }.get(status, "An Error Occurred"),
+    }
+    return render(request, "errors/error.html", context, status=status)

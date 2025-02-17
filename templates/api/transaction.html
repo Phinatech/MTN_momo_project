@@ -12,15 +12,22 @@
 					<div class="page-header">
 						<div class="row align-items-center">
 							<div class="col">
-								<h3 class="page-title">{{type|title}}</h3>
+								<h3 class="page-title">{{ type|title }}</h3>
 								<ul class="breadcrumb">
 									<li class="breadcrumb-item"><a href="{% url "api:index" %}">Dashboard</a></li>
-									<li class="breadcrumb-item active">{{type|title}}</li>
+									<li class="breadcrumb-item active">{{ type|title }}</li>
 								</ul>
+							</div>
+							<div class="col-auto">
+								<!-- Button to View JSON -->
+								<a href="{% url 'api:transaction_api' type=type %}" target="_blank" class="btn btn-primary">
+									View as JSON
+								</a>
 							</div>
 						</div>
 					</div>
 					<!-- /Page Header -->
+
 
 
 					{% if type == "All Transactions" %}
@@ -71,13 +78,13 @@
 												{% for payment in payments %}
 												<tr>
 													{% if type == "All Transactions" %}
-													<td><a href="{% url "api:details" payment.type payment.id %}">{{payment.type}}</a></td>
+													<td><a href="{% url "api:details" payment.type payment.id %}" target="_blank">{{payment.type}}</a></td>
 													{% endif %}
 													<td><a href="{% url "api:details" payment.type payment.id %}">#{{ payment.transaction_id }}</a></td>
 													<td>
 														<h2 class="table-avatar">
 															<a href="">
-																<img class="avatar avatar-sm me-2 avatar-img rounded-circle" src="{% static 'img/profiles/avatar-02.jpg' %}" alt="User Image">
+																<img class="avatar avatar-sm me-2 avatar-img rounded-circle" src="{% static 'img/profiles/avatar-01.jpg' %}" alt="User Image">
 																{{ payment.recipient }}
 															</a>
 														</h2>
@@ -86,7 +93,7 @@
 													<td>
 														<h2 class="table-avatar">
 															<a href="">
-																<img class="avatar avatar-sm me-2 avatar-img rounded-circle" src="{% static 'img/profiles/avatar-02.jpg' %}" alt="User Image">
+																<img class="avatar avatar-sm me-2 avatar-img rounded-circle" src="{% static 'img/profiles/avatar-01.jpg' %}" alt="User Image">
 																{{ payment.sender }}
 															</a>
 														</h2>
@@ -95,9 +102,23 @@
 													<td>RWF {{ payment.amount|floatformat:2|intcomma }}</td>
 													<td>{{ payment.date|date:"d M Y" }}</td>
 													<td class="text-end">
-														<a class="btn btn-sm btn-white" href="{% url "api:details" payment.type payment.id %}">
-															<i class="far fa-eye me-1"></i> View
-														</a>
+														<div class="dropdown dropdown-action">
+															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+															<div class="dropdown-menu dropdown-menu-right">
+																<a class="dropdown-item" href="{% url "api:details" payment.type payment.id %}">
+																	<i class="far fa-edit me-2"></i> View
+																</a>
+																<a class="dropdown-item" href="{% url 'api:details_download' payment.type payment.id 'pdf' %}" target="_blank">
+																	<i class="far fa-file-alt me-2"></i> Download as PDF
+																</a>
+																<a class="dropdown-item" href="{% url 'api:details_download' payment.type payment.id 'csv' %}" target="_blank">
+																	<i class="fas fa-file-csv me-2"></i> Download as CSV
+																</a>
+																<a class="dropdown-item" href="{% url 'api:details_download' payment.type payment.id 'json' %}" target="_blank">
+																	<i class="far fa-file-code me-2"></i> Download as JSON
+																</a>																
+															</div>															
+														</div>
 													</td>
 												</tr>
 												{% empty %}
