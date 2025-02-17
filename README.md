@@ -83,9 +83,11 @@ Visit **http://127.0.0.1:8000/** in your browser to access the app.
 
 ---
 
-## **🤝 Contributing**  
+## **🤝 Contributors**  
 
-Want to contribute? Feel free to fork the repo and submit a **Pull Request (PR)**! 🚀  
+Tawe Kelvin
+Charles Iheke
+Chinemerem Judith Ugbo
 
 ---
 
