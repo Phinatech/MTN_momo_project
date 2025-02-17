@@ -39,7 +39,7 @@ source venv/bin/activate  # On Windows use: venv\Scripts\activate
 
 ### **3️⃣ Install Dependencies**  
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt  #for installing all depencies, using a virtual environment would make much sense
 ```
 
 ### **4️⃣ Configure Database**
@@ -51,15 +51,15 @@ python manage.py migrate
 
 ### **6️⃣ Create a Superuser**  
 ```bash
-python manage.py createsuperuser
+python manage.py createsuperuser  # Creating  a Super with your email, password 
 ```
 
 ### **7️⃣ Start the Development Server**  
 
 ```bash
-python manage.py runserver
+python manage.py runserver    # Start the Development Server on the prot you specified 
 ```
-Visit **http://127.0.0.1:8000/** in your browser to access the app.
+Visit **http://127.0.0.1:8000/** in your browser to access the app. # May be different , depending on the port you are using 
 
 ---
 
