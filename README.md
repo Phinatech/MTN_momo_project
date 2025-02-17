@@ -34,12 +34,12 @@ cd JudithMomoAPI
 ### **2️⃣ Create a Virtual Environment**  
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
+source venv/bin/activate  
 ```
 
 ### **3️⃣ Install Dependencies**  
 ```bash
-pip install -r requirements.txt  # Install all dependencies using a virtual environment
+pip install -r requirements.txt  
 ```
 
 ### **4️⃣ Install WeasyPrint**  
@@ -73,7 +73,7 @@ python manage.py migrate
 
 ### **7️⃣ Create a Superuser**  
 ```bash
-python manage.py createsuperuser  # Create a superuser with your email and password
+python manage.py createsuperuser  
 ```
 
 ### **8️⃣ Collect Static Files**  
@@ -83,7 +83,7 @@ python manage.py collectstatic
 
 ### **9️⃣ Start the Development Server**  
 ```bash
-python manage.py runserver  # Start the Development Server on the specified port
+python manage.py runserver  
 ```
 Visit **http://127.0.0.1:8000/** in your browser to access the app. # May be different depending on the port you are using
 
