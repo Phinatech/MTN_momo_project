@@ -4,21 +4,11 @@ This project is brought to you by the following contributors:
 
 ## Lead Developers
 
-- **Judith** - Main Developer, Project Coordinator (<c.ugbo@alustudent.com>)
-  - Judith led the development efforts and coordinated the project activities to ensure timely delivery.
-- **Kelvin** - Backend Developer (<k.tawe@alustudent.com>)
-    - Kelvin was responsible for designing and implementing the server-side logic and database management.
-- **Olivier** - Frontend Developer (olivier@example.com)
-    - Olivier developed the user interface and ensured a seamless user experience.
-- **Charles** - UI/UX Designer (charles@example.com)
-    - Charles crafted the visual design and user interaction flows for the application.
-
-## Contributors
-
-- **Alice Johnson** - Documentation, Testing (alice@example.com)
-    - Alice handled the project documentation and conducted thorough testing to ensure quality.
-- **Bob Brown** - DevOps, Infrastructure (bob@example.com)
-    - Bob managed the deployment processes and maintained the infrastructure for the project.
+- **Judith** - Main Developer, Project Coordinator - c.ugbo@alustudent.com
+- **Kelvin** - Backend Developer - k.tawe@alustudent.com
+- **Olivier** - Frontend Developer - olivier@example.com
+- **Charles** - UI/UX Designer charles@example.com
+    
 
 We thank all contributors for their hard work and dedication to this project.
 
