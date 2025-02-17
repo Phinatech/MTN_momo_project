@@ -19,13 +19,8 @@ def my_context_processors(request):
             'Fund Transfer': {'icon': 'repeat', 'color': 'bg-info'},
         }
 
-        # An empty List to hold transaction summaries
+        # List to hold transaction summaries
         transaction_sidebar = []
-        # Get the current user's profile
-        profile = Profile.objects.get(user=request.user)
-        
-        # Get the current date and subtract 30 days
-        start_date = date.today() - timedelta(days=30)
         
         # Add individual transaction types
         for transaction_type, _ in Transaction.TRANSACTION_TYPES:

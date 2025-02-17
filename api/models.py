@@ -39,6 +39,7 @@ class Transaction(models.Model):
     service_center = models.CharField(max_length=50)
     account_balance = models.IntegerField(default=0)
     transaction_fee = models.IntegerField()
+    account_number = models.CharField(max_length=50, null=True, blank=True)  # Extracted ID
     raw_message = models.TextField()
 
     def __str__(self):

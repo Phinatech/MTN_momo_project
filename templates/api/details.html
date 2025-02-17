@@ -7,6 +7,7 @@
 	<!-- Page Wrapper -->
 	<div class="page-wrapper">
 		<div class="content container-fluid">
+			{% include "partials/alert.html" %}
 	
 			<div class="row justify-content-center">
 				<div class="col-xl-10">
@@ -21,6 +22,7 @@
 										<div class="invoice-head">
 											<h2>{{ details.type|title }}</h2>
 											<p>Transaction ID : {{details.transaction_id}}</p>
+											<p>External	Transaction ID : {{details.external_transaction_id}}</p>
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -79,6 +81,7 @@
 														<th>Sender</th>
 														<th>Sender ID</th>
 														<th>Amount</th>
+														<th>Account Number </th>
 														<th class="text-end">Account Balance</th>
 													</tr>
 												</thead>
@@ -89,6 +92,7 @@
 														<td>{{details.sender}}</td>
 														<td>{{details.sender_id}}</td>
 														<th>{{details.currency}}{{details.amount|intcomma}}</th>
+														<th>{{details.account_number}}</th>
 														<th class="text-end">{{details.currency}}{{details.account_balance|intcomma}}</th>
 													</tr>
 												</tbody>

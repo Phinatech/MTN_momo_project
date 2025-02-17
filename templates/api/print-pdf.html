@@ -1,0 +1,115 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Details</title>
+    
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+
+</head>
+<body>
+	<div class="row justify-content-center" style="margin-top:15px">
+		<div class="col-xl-10">
+			<div class="card invoice-info-card">
+				<div class="card-body">
+					<div class="invoice-item invoice-item-one">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="invoice-logo">
+									<img src="{% static 'img/logo.png' %}" alt="logo">
+								</div>
+								<div class="invoice-head">
+									<h2>{{ details.type|title }}</h2>
+									<p>Transaction ID : {{details.transaction_id}}</p>
+									<p>External	Transaction ID : {{details.external_transaction_id}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="invoice-issues-box">
+						<div class="row">
+							<div class="col-lg-4 col-md-4">
+								<div class="invoice-issues-date">
+									<p>Date : {{details.date}}</p>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4">
+								<div class="invoice-issues-date">
+									<p>Date Sent : {{details.date_sent}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="invoice-item invoice-table-wrap">
+						<div class="row">
+							<div class="col-md-8">
+								<div>
+									<table class="invoice-table table table-center mb-0">
+										<thead>
+											<tr>
+												<th>Recipient</th>
+												<th>Recipient ID</th>
+												<th>Sender</th>
+												<th>Sender ID</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>{{details.recipient}}</td>
+												<td>{{details.recipient_id}}</td>
+												<td>{{details.sender}}</td>
+												<td>{{details.sender_id}}</td>
+											</tr>
+										</tbody>
+									</table>
+									<table class="invoice-table table table-center mb-0">
+										<thead>
+											<tr>
+												<th>Amount</th>
+												<th>Account Number</th>
+												<th>Account Balance</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>{{details.currency}}{{details.amount|intcomma}}</th>
+												<td>{{details.account_number}}</td>
+												<th>{{details.currency}}{{details.account_balance|intcomma}}</th>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>						
+
+					<div class="row justify-content-center">
+						<div class="col-lg-12 col-md-12">
+							<div class="invoice-terms">
+								<h6>Raw Message:</h6>
+								<p class="mb-0">{{details.raw_message}}</p>
+							</div>
+						</div>
+						<h6 class="invoice-name">Service Center</h6>
+						<p class="invoice-details">
+							{{ details.service_center}} <br>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

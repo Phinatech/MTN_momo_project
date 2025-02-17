@@ -8,8 +8,10 @@ from django.urls import reverse
 from .models import Transaction
 from django.template.loader import get_template
 from django.http import HttpResponseRedirect
-from weasyprint import HTML
-import tempfile
+from django.template.loader import render_to_string
+from weasyprint import HTML, CSS
+import os
+from django.conf import settings
 
 
 @login_required
@@ -48,17 +50,30 @@ def details_download(request, type, id, file_format):
         writer.writerow(transaction_data.values())  # Write data
     
     elif file_format == "pdf":
-        # Your logic for generating PDF (WeasyPrint)
-        template = get_template("api/details.html")  # Use your actual details template
-        html_content = template.render({"details": transaction})
-
-        # Create a PDF file
+        # Render the template to HTML with context
+        template = render_to_string("api/print-pdf.html", {"details": transaction})
+        
+        # Define the CSS files to be included
+        css_files = [
+            CSS(os.path.join(settings.STATIC_ROOT, 'css', 'bootstrap.min.css')),
+            CSS(os.path.join(settings.STATIC_ROOT, 'plugins', 'fontawesome', 'css', 'fontawesome.min.css')),
+            CSS(os.path.join(settings.STATIC_ROOT, 'plugins', 'fontawesome', 'css', 'all.min.css')),
+            CSS(os.path.join(settings.STATIC_ROOT, 'css', 'style.css'))
+        ]
+        
+        # Create a PDF response
         filename = f'transaction_{id}.pdf'
-        response = HttpResponse(content_type="application/pdf")
-        response["Content-Disposition"] = f'attachment; filename="{filename}"'
-
+        response = HttpResponse(content_type="application/pdf", charset='utf-8')
+        response["Content-Disposition"] = f'inline; filename="{filename}"'
+        
         # Use WeasyPrint to generate the PDF
-        HTML(string=html_content).write_pdf(response)
+        html = HTML(string=template, base_url=request.build_absolute_uri())  # base_url ensures relative paths work
+        
+        # Apply the CSS files
+        html.write_pdf(response, stylesheets=css_files, presentational_hints=True)
+        
+        return response
+        
 
     else:
         messages.error(request, "Invalid file format.")

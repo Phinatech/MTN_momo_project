@@ -18,7 +18,7 @@ def extract_transaction_details(body):
     if "You have received" in body and "on your mobile money account" in body:
         transaction_id = re.search(r"Financial Transaction Id:\s*(\d+)", body)
         amount = re.search(r"received ([\d,]+) RWF", body)
-        sender_info = re.search(r"from (.+?) \(\*+\d+\)", body)
+        sender_info = re.search(r"from (.+?) \(\*+(\d+)\)", body)  # Added capture group for sender's ID
         completed_date = re.search(r"at (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", body)
         account_balance = re.search(r"Your new balance:\s*([\d,]+) RWF", body)
 
@@ -26,8 +26,9 @@ def extract_transaction_details(body):
             "type": "Incoming Money",
             "transaction_id": transaction_id.group(1) if transaction_id else None,
             "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-            "sender": sender_info.group(1) if sender_info else "Unknown",
-            "recipient": "User",
+            "sender": sender_info.group(1) if sender_info else "Unknown",  # Name of the sender
+            "sender_id": sender_info.group(2) if sender_info else "Unknown",  # Extracted sender's ID
+            "recipient": "You",
             "recipient_id": None,
             "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
             "account_balance": int(account_balance.group(1).replace(",", "")) if account_balance else 0,
@@ -47,7 +48,7 @@ def extract_transaction_details(body):
             "type": "Payments",
             "transaction_id": transaction_id.group(1) if transaction_id else None,
             "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-            "sender": "User",
+            "sender": "You",
             "recipient": recipient_info.group(1) if recipient_info else "Unknown",
             "recipient_id": recipient_info.group(2) if recipient_info else None,
             "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
@@ -68,7 +69,7 @@ def extract_transaction_details(body):
             "type": "Airtime Purchase",
             "transaction_id": transaction_id.group(1) if transaction_id else None,
             "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-            "sender": "User",
+            "sender": "You",
             "recipient": "Airtime",
             "recipient_id": None,
             "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
@@ -91,7 +92,7 @@ def extract_transaction_details(body):
             "type": "Bank Transfer",
             "transaction_id": transaction_id,
             "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-            "sender": "User",
+            "sender": "You",
             "sender_id": sender_info.group(1) if sender_info else None,
             "recipient": recipient_info.group(1) if recipient_info else "Unknown",
             "recipient_id": recipient_info.group(2) if recipient_info else None,
@@ -108,44 +109,46 @@ def extract_transaction_details(body):
         completed_date = re.search(r"at (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", body)
         account_balance = re.search(r"Your new balance:\s*([\d,]+) RWF", body)
         transaction_fee = re.search(r"Fee paid:\s*(\d+) RWF", body)
-        sender_id = re.search(r"mobile money account:\s*(\d+)", body)  # Extract sender ID
+        sender_name = re.search(r"^You (.+?) \(\*+", body)  # Extract sender's full name
+        sender_id = re.search(r"(\*+\d+)", body)  # Extract sender's ID (masked part)
+        account_number = re.search(r"mobile money account:\s*(\d+)", body)  # Extract account number
 
         return {
             "type": "Withdrawals",
             "transaction_id": transaction_id.group(1) if transaction_id else None,
-            "amount": int(amount.group(1)) if amount else 0,
-            "sender": "User",
-            "sender_id": sender_id.group(1) if sender_id else None,  # Use sender_id extracted from the message
-            "recipient": agent_info.group(1) if agent_info else "Unknown",
-            "recipient_id": agent_info.group(2) if agent_info else None,  # Ensure recipient_id is extracted
+            "amount": int(amount.group(1).replace(",", "")) if amount else 0,
+            "sender": sender_name.group(1) if sender_name else "Unknown",  # Sender's full name
+            "sender_id": sender_id.group(1) if sender_id else "Unknown",  # Extracted sender's ID
+            "recipient": agent_info.group(1) if agent_info else "Unknown",  # Recipient (agent's name)
+            "recipient_id": agent_info.group(2) if agent_info else None,  # Recipient (agent's phone number)
             "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
             "account_balance": int(account_balance.group(1).replace(",", "")) if account_balance else 0,
-            "transaction_fee": int(transaction_fee.group(1)) if transaction_fee else 0
+            "transaction_fee": int(transaction_fee.group(1)) if transaction_fee else 0,
+            "account_number": account_number.group(1) if account_number else None  # New field for account number
         }
-        
-        
+
     # Data Bundle Purchase Transaction
     elif "by Data Bundle" in body:
         amount = re.search(r"A transaction of ([\d,]+) RWF", body)
         completed_date = re.search(r"at (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", body)
         account_balance = re.search(r"Your new balance:([\d,]+) RWF", body)
         transaction_id = re.search(r"Financial Transaction Id: (\d+)", body)
-        external_transaction_id = re.search(r"External Transaction Id: (\d+)", body)
+        external_transaction_id = re.search(r"External Transaction Id: (\d+)", body)  # Ensured this captures external transaction ID correctly
         transaction_fee = re.search(r"Fee was (\d+) RWF", body)
 
         return {
             "type": "Data Bundle Purchase",
             "transaction_id": transaction_id.group(1) if transaction_id else None,
-            "external_transaction_id": external_transaction_id.group(1) if external_transaction_id else None,
+            "external_transaction_id": external_transaction_id.group(1) if external_transaction_id else None,  # Ensure this is extracted
             "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-            "sender": "User",
+            "sender": "You",
             "recipient": "Data Bundle MTN",
             "recipient_id": None,
             "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
             "account_balance": int(account_balance.group(1).replace(",", "")) if account_balance else 0,
             "transaction_fee": int(transaction_fee.group(1)) if transaction_fee else 0
         }
-        
+
     # Bank Deposit Transaction
     elif "A bank deposit of" in body:
         amount = re.search(r"A bank deposit of ([\d,]+) RWF", body)
@@ -158,7 +161,7 @@ def extract_transaction_details(body):
             "transaction_id": transaction_id.group(1) if transaction_id else None,
             "amount": int(amount.group(1).replace(",", "")) if amount else 0,
             "sender": "Bank",
-            "recipient": "User",
+            "recipient": "You",
             "recipient_id": None,
             "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
             "account_balance": int(account_balance.group(1).replace(",", "")) if account_balance else 0,
@@ -172,7 +175,7 @@ def extract_transaction_details(body):
         completed_date = re.search(r"at (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", body)
         account_balance = re.search(r"Your new balance:([\d,]+) RWF", body)
         transaction_id = re.search(r"Financial Transaction Id: (\d+)", body)
-        external_transaction_id = re.search(r"External Transaction Id: ([\w-]+)", body)
+        external_transaction_id = re.search(r"External Transaction Id:\s*([^\s]+)", body)  # Adjusted regex
         transaction_fee = re.search(r"Fee was (\d+) RWF", body)
 
         return {
@@ -180,26 +183,29 @@ def extract_transaction_details(body):
             "transaction_id": transaction_id.group(1) if transaction_id else None,
             "external_transaction_id": external_transaction_id.group(1) if external_transaction_id else None,
             "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-            "sender": "User",
+            "sender": "You",
             "recipient": recipient_info.group(1) if recipient_info else "Unknown Business",
             "recipient_id": None,
             "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
             "account_balance": int(account_balance.group(1).replace(",", "")) if account_balance else 0,
             "transaction_fee": int(transaction_fee.group(1)) if transaction_fee else 0
         }
-        
+
     # Failed Transaction
     elif "failed at" in body:
         amount = re.search(r"the transaction with amount ([\d,]+) RWF", body)
         reason = re.search(r"message:\s*(.*?)\s*failed", body)  # Extract failure reason if available
         failed_date = re.search(r"failed at (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", body)
 
+        # Set recipient to "Data Bundle MTN" instead of "Unknown"
+        recipient = "Data Bundle MTN"
+
         return {
             "type": "Failed Transaction",
             "transaction_id": None,  # No transaction ID for failed transactions
             "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-            "sender": "User",
-            "recipient": "Unknown",  # No recipient since transaction failed
+            "sender": "You",
+            "recipient": recipient,  # Set to "Data Bundle MTN"
             "recipient_id": None,
             "failed_date": timezone.make_aware(datetime.strptime(failed_date.group(1), "%Y-%m-%d %H:%M:%S")) if failed_date else None,
             "reason": reason.group(1) if reason else "Unknown",
@@ -208,24 +214,25 @@ def extract_transaction_details(body):
         }
 
     # Fund Transfer (Mobile Money to Bank or Another User)
-    elif "You have transferred" in body and "from your mobile money account" in body:
-        transaction_id = re.search(r"Financial Transaction Id:\s*(\d+)", body)
+    elif "You have transferred" in body:
         amount = re.search(r"You have transferred ([\d,]+) RWF", body)
-        sender_account = re.search(r"from your mobile money account (\d+)", body)
-        recipient_info = re.search(r"to (.+?) \((\d+)\)", body)  # Extract recipient name and phone number
+        recipient_name = re.search(r"to (.+?) \(\d+\)", body)  # Extract recipient's name
+        recipient_account = re.search(r"to .+? \((\d+)\)", body)  # Extract recipient's account number
+        sender_account = re.search(r"from your mobile money account (\d+)", body)  # Extract sender account number
         completed_date = re.search(r"at (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", body)
-        account_balance = re.search(r"Your new balance:\s*([\d,]+) RWF", body)
+        transaction_id = re.search(r"Financial Transaction Id: (\d+)", body)
 
         return {
-            "type": "Fund Transfer",
+            "type": "Money Transfer",
             "transaction_id": transaction_id.group(1) if transaction_id else None,
             "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-            "sender": "User",
-            "sender_account": sender_account.group(1) if sender_account else "Unknown",
-            "recipient": recipient_info.group(1) if recipient_info else "Unknown",
-            "recipient_id": recipient_info.group(2) if recipient_info else None,
+            "sender": "You",
+            "recipient": recipient_name.group(1) if recipient_name else "Unknown",
+            "recipient_account": recipient_account.group(1) if recipient_account else None,
+            "account_number": sender_account.group(1) if sender_account else None,  # Added account_number field
             "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
-            "account_balance": int(account_balance.group(1).replace(",", "")) if account_balance else 0,
+            "status": "Completed",
+            "transaction_fee": 0  # Assuming no fee is mentioned
         }
 
 
@@ -265,6 +272,7 @@ def extract_sms_body(root, request):
                 service_center=sms.get("service_center", ""),
                 account_balance=transaction_data.get("account_balance", 0),
                 transaction_fee=transaction_data.get("transaction_fee", 0),
+                account_number=transaction_data.get("account_number"),
                 raw_message=body
             )
     

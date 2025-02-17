@@ -31,7 +31,7 @@ class Command(BaseCommand):
                 "transaction_id": transaction_id.group(1) if transaction_id else None,
                 "amount": int(amount.group(1).replace(",", "")) if amount else 0,
                 "sender": sender_info.group(1) if sender_info else "Unknown",
-                "recipient": "User",
+                "recipient": "You",
                 "recipient_id": None,
                 "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
                 "account_balance": int(account_balance.group(1).replace(",", "")) if account_balance else 0,
@@ -51,7 +51,7 @@ class Command(BaseCommand):
                 "type": "Payments",
                 "transaction_id": transaction_id.group(1) if transaction_id else None,
                 "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-                "sender": "User",
+                "sender": "You",
                 "recipient": recipient_info.group(1) if recipient_info else "Unknown",
                 "recipient_id": recipient_info.group(2) if recipient_info else None,
                 "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
@@ -72,7 +72,7 @@ class Command(BaseCommand):
                 "type": "Airtime Purchase",
                 "transaction_id": transaction_id.group(1) if transaction_id else None,
                 "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-                "sender": "User",
+                "sender": "You",
                 "recipient": "Airtime",
                 "recipient_id": None,
                 "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
@@ -95,7 +95,7 @@ class Command(BaseCommand):
                 "type": "Bank Transfer",
                 "transaction_id": transaction_id,
                 "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-                "sender": "User",
+                "sender": "You",
                 "sender_id": sender_info.group(1) if sender_info else None,
                 "recipient": recipient_info.group(1) if recipient_info else "Unknown",
                 "recipient_id": recipient_info.group(2) if recipient_info else None,
@@ -118,7 +118,7 @@ class Command(BaseCommand):
                 "type": "Withdrawals",
                 "transaction_id": transaction_id.group(1) if transaction_id else None,
                 "amount": int(amount.group(1)) if amount else 0,
-                "sender": "User",
+                "sender": "You",
                 "sender_id": sender_id.group(1) if sender_id else None,  # Use sender_id extracted from the message
                 "recipient": agent_info.group(1) if agent_info else "Unknown",
                 "recipient_id": agent_info.group(2) if agent_info else None,  # Ensure recipient_id is extracted
@@ -142,7 +142,7 @@ class Command(BaseCommand):
                 "transaction_id": transaction_id.group(1) if transaction_id else None,
                 "external_transaction_id": external_transaction_id.group(1) if external_transaction_id else None,
                 "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-                "sender": "User",
+                "sender": "You",
                 "recipient": "Data Bundle MTN",
                 "recipient_id": None,
                 "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
@@ -162,7 +162,7 @@ class Command(BaseCommand):
                 "transaction_id": transaction_id.group(1) if transaction_id else None,
                 "amount": int(amount.group(1).replace(",", "")) if amount else 0,
                 "sender": "Bank",
-                "recipient": "User",
+                "recipient": "You",
                 "recipient_id": None,
                 "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
                 "account_balance": int(account_balance.group(1).replace(",", "")) if account_balance else 0,
@@ -184,7 +184,7 @@ class Command(BaseCommand):
                 "transaction_id": transaction_id.group(1) if transaction_id else None,
                 "external_transaction_id": external_transaction_id.group(1) if external_transaction_id else None,
                 "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-                "sender": "User",
+                "sender": "You",
                 "recipient": recipient_info.group(1) if recipient_info else "Unknown Business",
                 "recipient_id": None,
                 "completed_date": timezone.make_aware(datetime.strptime(completed_date.group(1), "%Y-%m-%d %H:%M:%S")) if completed_date else None,
@@ -202,7 +202,7 @@ class Command(BaseCommand):
                 "type": "Failed Transaction",
                 "transaction_id": None,  # No transaction ID for failed transactions
                 "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-                "sender": "User",
+                "sender": "You",
                 "recipient": "Unknown",  # No recipient since transaction failed
                 "recipient_id": None,
                 "failed_date": timezone.make_aware(datetime.strptime(failed_date.group(1), "%Y-%m-%d %H:%M:%S")) if failed_date else None,
@@ -224,7 +224,7 @@ class Command(BaseCommand):
                 "type": "Fund Transfer",
                 "transaction_id": transaction_id.group(1) if transaction_id else None,
                 "amount": int(amount.group(1).replace(",", "")) if amount else 0,
-                "sender": "User",
+                "sender": "You",
                 "sender_account": sender_account.group(1) if sender_account else "Unknown",
                 "recipient": recipient_info.group(1) if recipient_info else "Unknown",
                 "recipient_id": recipient_info.group(2) if recipient_info else None,
@@ -238,13 +238,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         file_path = kwargs["xml_file"]
-        # creating a default xml file path if it doesn not exist yet and the user has not provided one
-        # but the default xml file should be modified_sms_v2.xml
-        if not file_path:
-            print("No file path provided. Using default file path...")
-            file_path = "modified_sms_v2.xml"
-            print(f"Using default file path: {file_path}")
-            print(f"File path: {file_path}")
 
         try:
             tree = ET.parse(file_path)

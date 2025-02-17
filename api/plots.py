@@ -161,7 +161,7 @@ def histogram_chart(request):
     amounts = [tx.amount for tx in transactions]
 
     # Create bins (group transaction amounts into ranges)
-    bin_size = 10000  #if need be adjust bin size as needed
+    bin_size = 10000  # Adjust bin size as needed
     bins = Counter((amount // bin_size) * bin_size for amount in amounts)
 
     # Convert to Apex format
@@ -176,12 +176,12 @@ def scatter_chart(request):
 
     transactions, _, _ = get_user_transactions(request)
 
-    # Extracting transaction amount, fee, and type for tooltips
+    # Extract transaction amount, fee, and type for tooltips
     scatter_data = [
         {"x": tx.amount, "y": tx.transaction_fee, "type": tx.type} for tx in transactions
     ]
 
-    # Converting to JSON for ApexCharts
+    # Convert to JSON for ApexCharts
     scatter_chart_data = {
         "series": [
             {
