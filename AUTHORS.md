@@ -6,8 +6,8 @@ This project is brought to you by the following contributors:
 
 - **Chinemerem Judith** - Main Developer, Project Coordinator - c.ugbo@alustudent.com
 - **Kelvin** - Backend Developer - k.tawe@alustudent.com
-- **Olivier** - Frontend Developer - olivier@example.com
-- **Charles** - UI/UX Designer charles@example.com
+- **Olivier** - Frontend Developer - o.ishimwe@alustudent.com
+- **Charles** - UI/UX Designer c.iheke@alustudent.com
     
 
 We thank all contributors for their hard work and dedication to this project.
