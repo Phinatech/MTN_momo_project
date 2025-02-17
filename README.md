@@ -28,7 +28,7 @@ The **Momo API App** is a Django-based application that allows users to **upload
 ### **1️⃣ Clone the Repository**  
 ```bash
 git clone https://github.com/Phinatech/MTN_momo_project.git
-cd MTN_momo_project
+cd JudithMomoAPI
 ```
 
 ### **2️⃣ Create a Virtual Environment**  
@@ -39,27 +39,53 @@ source venv/bin/activate  # On Windows use: venv\Scripts\activate
 
 ### **3️⃣ Install Dependencies**  
 ```bash
-pip install -r requirements.txt  #for installing all depencies, using a virtual environment would make much sense
+pip install -r requirements.txt  # Install all dependencies using a virtual environment
 ```
 
-### **4️⃣ Configure Database**
+### **4️⃣ Install WeasyPrint**  
 
-### **5️⃣ Apply Migrations**  
+#### **For macOS:**  
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install gtk+3
+brew install weasyprint
+pip install cairocffi pycairo
+export DYLD_LIBRARY_PATH="/usr/local/lib:$DYLD_LIBRARY_PATH"
+```
+
+#### **For Windows:**  
+1. Download and install **GTK+3** from [GTK Windows Installers](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/releases)
+2. Add GTK+3 to the **system PATH**
+3. Install WeasyPrint:
+   ```bash
+   pip install weasyprint cairocffi
+   ```
+
+### **5️⃣ Make Migrations**
+```bash
+python manage.py makemigrations
+```
+
+### **6️⃣ Apply Migrations**  
 ```bash
 python manage.py migrate
 ```
 
-### **6️⃣ Create a Superuser**  
+### **7️⃣ Create a Superuser**  
 ```bash
-python manage.py createsuperuser  # Creating  a Super with your email, password 
+python manage.py createsuperuser  # Create a superuser with your email and password
 ```
 
-### **7️⃣ Start the Development Server**  
-
+### **8️⃣ Collect Static Files**  
 ```bash
-python manage.py runserver    # Start the Development Server on the prot you specified 
+python manage.py collectstatic  
 ```
-Visit **http://127.0.0.1:8000/** in your browser to access the app. # May be different , depending on the port you are using 
+
+### **9️⃣ Start the Development Server**  
+```bash
+python manage.py runserver  # Start the Development Server on the specified port
+```
+Visit **http://127.0.0.1:8000/** in your browser to access the app. # May be different depending on the port you are using
 
 ---
 
@@ -90,6 +116,8 @@ Want to contribute? Feel free to fork the repo and submit a **Pull Request (PR)*
 ---
 
 ## **🛠️ Troubleshooting**  
+
+---
 
 ## **📜 License**  
 This project is licensed under the **MIT License**.  
