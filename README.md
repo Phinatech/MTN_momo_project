@@ -88,7 +88,7 @@ Visit **http://127.0.0.1:8000/** in your browser to access the app.
 Tawe Kelvin
 Charles Iheke
 Chinemerem Judith Ugbo
-
+shimwe Olivier
 ---
 
 ## **🛠️ Troubleshooting**  
