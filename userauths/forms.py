@@ -5,33 +5,33 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={
-        'class': 'validate',  # This ensures the proper styling for the input field
+        'class': 'validate',  
         'id': 'reg_user_name',
     }))
     
     first_name = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'validate',  # Ensures the proper styling for the input field
+        'class': 'validate',  
         'id': 'first_name',
     }))
     
     last_name = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'validate',  # Ensures the proper styling for the input field
+        'class': 'validate',  
         'id': 'last_name',
     }))
     
     username = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'validate',  # Ensures the proper styling for the input field
+        'class': 'validate',  
         'id': 'reg_user_name'
     }))
     
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'class': '',  # Ensures the proper styling for the input field
+        'class': '',  
         'id': 'reg_pass_word',
         'onkeyup': 'validate()'
     }))
     
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'class': '',  # Ensures the proper styling for the input field
+        'class': '',  
         'id': 're_pass_word',
         'onkeyup': 'validate()'
     }))

@@ -87,6 +87,9 @@ python manage.py runserver
 ```
 Visit **http://127.0.0.1:8000/** in your browser to access the app. # May be different depending on the port you are using
 
+
+## deloyed link 
+Momoapi.pythonanywhere.com
 ---
 
 ## **📂 Usage Instructions**  
